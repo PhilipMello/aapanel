@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+# Author
+author="Philip Mello <@Microsoft>"
+# Version
+version="1.0"
+# License
+license="MIT"
+# Date
+current_date=$(date +'%b %d, %Y')
+# GitHub
+github='https://github.com/PhilipMello/aaPanel/'
+github2='https://github.com/AtomyCloud/aaPanel/'
+echo "
+# --------------------------------------------------------------
+# Script     : aaPanel Script Automation
+# Description: Automation for install aaPanel on Ubuntu
+# Version    : $version
+# Date       : $current_date
+# Author     : $author
+# License    : $license
+# Github     : $github
+# Github     : $github2
+# Microsoft  : $microsoft
+# --------------------------------------------------------------
+# How to use: Execute ./atool
+# Exemples:
+# Manual: ./atool -h OR ./atool --h OR ./atool --help
+# --------------------------------------------------------------
+"
+WHITE=""
+BLUE="\033[97;104m"
+YELLOW="\033[97;103m"
+CYAN="\033[97;106m"
+MAGENTA="\033[97;45m"
+GREEN="\033[97;102m"
+RED="\033[97;41m"
+ENDCOLOR="\e[0m"
+
+
+echo "1. Install updates only"
+echo "2. Install updates && upgrades"
+echo "3. Install tool packages (wget, curl, grep, htop, nano...)"
+echo "4. Install network tools (iperf, netcat, tcpdump...)"
+echo "5. Install aaPanel"
+read option
+
+case $option in
+    1)
+        apt update -y
+        ;;
+    2)
+        apt update -y && apt upgrade -y
+        ;;
+    3)
+        apt update -y && apt install wget curl grep nano p7zip -y && curl https://rclone.org/install.sh | sudo bash -y
+        ;;
+    4)
+        apt install libsctp1 iperf3 rsync stow tcpdump nmap netcat-openbsd lnav  -y
+        ;;
+    5)
+    echo -e "
+    ==================================================================
+    |${MAGENTA}aaPanel installation script${ENDCOLOR}
+    ==================================================================
+    "
+    echo Type your hostname URL:
+    read hostnameurl
+    hostnamectl set-hostname $hostnameurl
+    echo "Your Hostname URL is:" $hostnameurl
+    echo -e "
+    ==================================================================
+    |${MAGENTA}Installling aaPanel...${ENDCOLOR}
+    ==================================================================
+    "
+    apt update -y && apt upgrade -y
+    apt update -y && apt install wget curl grep nano htop p7zip -y && curl https://rclone.org/install.sh | sudo bash -y
+    URL=https://www.aapanel.com/script/install_6.0_en.sh && if [ -f /usr/bin/curl ];then curl -ksSO "$URL" ;else wget --no-check-certificate -O install_6.0_en.sh "$URL";fi;bash install_6.0_en.sh aapanel
+    ;;
+esac
+
+# ---
+
+# Manual
+manual() {
+    echo -e ""
+    echo -e ""
+
+exit 0
+}
+
+if [[ $1 == "-h" || $1 == "--help" || "$1" == "--h" ]]; then
+    manual
+    exit 1
+fi
