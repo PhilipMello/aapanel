@@ -18,7 +18,7 @@ wget https://github.com/PhilipMello/aapanel/raw/refs/heads/main/atool && chmod +
 OR
 
 ```
-wget https://github.com/PhilipMello/aapanel/raw/refs/heads/main/atool && chmod +x atool && sudo mv gswitch /usr/bin/
+wget https://github.com/PhilipMello/aapanel/raw/refs/heads/main/atool && chmod +x atool && sudo mv atool /usr/bin/
 ```
 
 RUN:
