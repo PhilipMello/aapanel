@@ -41,7 +41,7 @@ GREEN="\033[97;102m"
 RED="\033[97;41m"
 ENDCOLOR="\e[0m"
 
-function zs_install_pkgs() {
+function atool_install_pkgs() {
     echo -e "
     +-----------------------------------------------------------+
     |${MAGENTA}Installing Pakcages${ENDCOLOR}
@@ -49,12 +49,13 @@ function zs_install_pkgs() {
     "
     sudo apt-get install \
     wget curl nano htop atop \
-    zip unzip p7zip iperf3 stow nmap \
+    zip unzip p7zip stow nmap \
     tcpdump netcat-openbsd mtr sed jq \
-    libsctp1 lnav sipcalc ipcalc inetutils-* net-tools -y
+    libsctp1 lnav sipcalc ipcalc inetutils-* net-tools \
+    iperf3  -y
 }
 
-function zs_install_aapanel_6() {
+function atool_install_aapanel_6() {
     echo -e "
     ==================================================================
     |${MAGENTA}aaPanel installation script${ENDCOLOR}
@@ -74,7 +75,7 @@ function zs_install_aapanel_6() {
     URL=https://www.aapanel.com/script/install_6.0_en.sh && if [ -f /usr/bin/curl ];then curl -ksSO "$URL" ;else wget --no-check-certificate -O install_6.0_en.sh "$URL";fi;bash install_6.0_en.sh aapanel
 }
 
-function zs_install_aapanel_7() {
+function atool_install_aapanel_7() {
     echo -e "
     ==================================================================
     |${MAGENTA}aaPanel installation script${ENDCOLOR}
@@ -92,6 +93,51 @@ function zs_install_aapanel_7() {
     URL=https://www.aapanel.com/script/install_7.0_en.sh && if [ -f /usr/bin/curl ];then curl -ksSO "$URL" ;else wget --no-check-certificate -O install_7.0_en.sh "$URL";fi;bash install_7.0_en.sh aapanel
 }
 
+# <-- Manual - BEGIN
+manual() {
+    echo -e "
+    ##############################################################
+    #                        Manual                           #
+    ##############################################################
+    
+    Option #1
+    Install updates only
+    ----------------------
+
+    Option #2
+    Install updates only && upgrades
+    ----------------------
+
+    Option #3
+    Installs a set of essential packages such as wget, curl, htop, nano, and other useful utilities.
+    ----------------------
+
+    Option #4
+    Installs rClone
+    ---------------------------
+
+    Option #5
+    Installs aaPanel version 6.0.0 on Ubuntu. Requires user to input hostname URL.
+    ---------------------------
+    
+    Option #6
+    Installs aaPanel version 7.0 on Ubuntu. Requires user to input hostname URL.
+    ---------------------------
+    
+    ##############################################################
+    # For more information or to report issues, visit the GitHub: #
+    # $github                                                    #
+    ##############################################################
+    "
+    exit 0
+}
+
+# Manual - END -->
+
+if [[ $1 == "-h" || $1 == "--help" || "$1" == "--h" ]]; then
+    manual
+    exit 1
+fi
 
 echo "1. Install updates only"
 echo "2. Install updates && upgrades"
@@ -109,16 +155,16 @@ case $option in
         apt update -y && apt upgrade -y
         ;;
     3)
-        zs_install_pkgs
+        atool_install_pkgs
         ;;
     4)
         curl https://rclone.org/install.sh | sudo bash -y
         ;;
     5)
-        zs_install_aapanel_6
+        atool_install_aapanel_6
         ;;
     6)
-        zs_install_aapanel_7
+        atool_install_aapanel_7
         ;;
     *)
         echo "Invalid option"
@@ -126,16 +172,3 @@ case $option in
 esac
 
 # ---
-
-# Manual
-manual() {
-    echo -e ""
-    echo -e ""
-
-exit 0
-}
-
-if [[ $1 == "-h" || $1 == "--help" || "$1" == "--h" ]]; then
-    manual
-    exit 1
-fi
